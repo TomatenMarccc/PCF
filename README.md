@@ -65,7 +65,10 @@ dominant interface colors.
 - Responsive result cards
 - Part detail route with all required PCF fields
 - PCF confirmation action that persists the status as `Complete`
-- Four prepared graph placeholders
+- Top Parts PCF waterfall chart
+- PCF Breakdown waterfall chart
+- Top Materials percentage chart
+- G2G emissions waterfall chart
 - Prepared BOM-Tree modal
 - Information placeholder route
 - Supabase-backed filter options and result data
@@ -207,3 +210,17 @@ access through a Supabase RLS policy.
 
 The current seed contains 12 development records. Replace or extend these
 records in `supabase/seed.sql` as the business dataset becomes available.
+
+### Part Chart Data
+
+The `public.part_chart_data` table stores one chart-data record per part:
+
+- `top_parts` - variable part contributions in `kgCO2eq/pc`
+- `pcf_breakdown` - BOM, G2G, logistics, and packaging contributions
+- `material_breakdown` - material shares that total 100 percent
+- `g2g_breakdown` - Gate-to-Gate emission contributions in `kgCO2eq/pc`
+
+Each field is a JSON array of `{ "label": string, "value": number }` entries.
+This keeps the X-axis categories flexible per part while the chart type and
+Y-axis unit remain consistent. The current migration and seed file generate
+mock chart data for all existing development parts.

@@ -19,6 +19,22 @@ export interface Part {
   updated_at: string;
 }
 
+export interface ChartPoint {
+  label: string;
+  value: number;
+}
+
+export interface PartChartData {
+  top_parts: ChartPoint[];
+  pcf_breakdown: ChartPoint[];
+  material_breakdown: ChartPoint[];
+  g2g_breakdown: ChartPoint[];
+}
+
+export interface PartDetail extends Part {
+  charts: PartChartData;
+}
+
 export interface FilterOptions {
   plantCodes: string[];
   referenceYears: number[];

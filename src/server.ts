@@ -96,22 +96,31 @@ app.get("/api/parts", async (request, response) => {
 
 app.get("/api/parts/:id", async (request, response) => {
   try {
-    const { data, error } = await getSupabaseClient()
-      .from("parts")
-      .select("*")
-      .eq("id", request.params.id)
-      .maybeSingle();
+    const supabase = getSupabaseClient();
+    const [{ data, error }, { data: charts, error: chartError }] =
+      await Promise.all([
+        supabase
+          .from("parts")
+          .select("*")
+          .eq("id", request.params.id)
+          .maybeSingle(),
+        supabase
+          .from("part_chart_data")
+          .select("top_parts, pcf_breakdown, material_breakdown, g2g_breakdown")
+          .eq("part_id", request.params.id)
+          .maybeSingle(),
+      ]);
 
-    if (error) {
-      throw error;
+    if (error || chartError) {
+      throw error ?? chartError;
     }
 
-    if (!data) {
+    if (!data || !charts) {
       response.status(404).json({ error: "Part not found." });
       return;
     }
 
-    response.json(data);
+    response.json({ ...data, charts });
   } catch (error) {
     handleApiError(response, error);
   }
@@ -135,7 +144,17 @@ app.post("/api/parts/:id/confirm", async (request, response) => {
       return;
     }
 
-    response.json(data);
+    const { data: charts, error: chartError } = await getSupabaseClient()
+      .from("part_chart_data")
+      .select("top_parts, pcf_breakdown, material_breakdown, g2g_breakdown")
+      .eq("part_id", request.params.id)
+      .single();
+
+    if (chartError) {
+      throw chartError;
+    }
+
+    response.json({ ...data, charts });
   } catch (error) {
     handleApiError(response, error);
   }

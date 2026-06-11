@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  Boxes,
   Check,
   CircleCheck,
   Copy,
@@ -8,16 +7,18 @@ import {
   Network,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { confirmPart, getPart } from "../api";
 import { formatPcf, formatPercent } from "../components/PartCard";
-import type { Part } from "../types";
+import type { PartDetail } from "../types";
+
+const PcfCharts = lazy(() => import("../components/PcfCharts"));
 
 export function DetailPage() {
   const { id } = useParams();
-  const [part, setPart] = useState<Part>();
+  const [part, setPart] = useState<PartDetail>();
   const [error, setError] = useState<string>();
   const [bomOpen, setBomOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -185,30 +186,16 @@ export function DetailPage() {
           </dl>
         </section>
 
-        <section className="chart-grid" aria-label="Future data visualizations">
-          {[
-            "Emission composition",
-            "BOM contribution",
-            "Data quality trend",
-            "PCF development",
-          ].map((title) => (
-            <article className="chart-placeholder" key={title}>
-              <div>
-                <Boxes size={19} />
-                <span>Visualization pipeline</span>
-              </div>
-              <h3>{title}</h3>
-              <div className="chart-skeleton" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              <p>Graph data will be connected in a future iteration.</p>
-            </article>
-          ))}
-        </section>
+        <Suspense
+          fallback={
+            <div className="charts-loading">
+              <LoaderCircle className="spin" size={22} />
+              <span>Loading calculation charts...</span>
+            </div>
+          }
+        >
+          <PcfCharts charts={part.charts} />
+        </Suspense>
       </div>
 
       {bomOpen && (
