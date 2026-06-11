@@ -15,6 +15,7 @@ import { formatPcf, formatPercent } from "../components/PartCard";
 import type { PartDetail } from "../types";
 
 const PcfCharts = lazy(() => import("../components/PcfCharts"));
+const BomTree = lazy(() => import("../components/BomTree"));
 
 export function DetailPage() {
   const { id } = useParams();
@@ -213,7 +214,7 @@ export function DetailPage() {
           >
             <header>
               <div>
-                <p className="eyebrow">Future visualization</p>
+                <p className="eyebrow">Bill of materials</p>
                 <h2 id="bom-title">BOM-Tree</h2>
               </div>
               <button
@@ -224,13 +225,13 @@ export function DetailPage() {
                 <X size={19} />
               </button>
             </header>
-            <div className="bom-placeholder">
-              <Network size={34} />
-              <h3>BOM tree visualization area</h3>
-              <p>
-                The component pipeline is ready for hierarchical BOM data.
-              </p>
-            </div>
+            <Suspense
+              fallback={
+                <div className="bom-tree-state">Loading BOM visualization...</div>
+              }
+            >
+              <BomTree partId={part.id} />
+            </Suspense>
           </section>
         </div>
       )}

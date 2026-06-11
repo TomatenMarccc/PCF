@@ -126,6 +126,27 @@ app.get("/api/parts/:id", async (request, response) => {
   }
 });
 
+app.get("/api/parts/:id/bom", async (request, response) => {
+  try {
+    const { data, error } = await getSupabaseClient()
+      .from("bom_nodes")
+      .select(
+        "id, node_key, parent_node_key, material_number, description, source, quantity, pcf, pcf_upstream, mcf, level, is_leaf",
+      )
+      .eq("part_id", request.params.id)
+      .order("level", { ascending: true })
+      .order("node_key", { ascending: true });
+
+    if (error) {
+      throw error;
+    }
+
+    response.json({ data });
+  } catch (error) {
+    handleApiError(response, error);
+  }
+});
+
 app.post("/api/parts/:id/confirm", async (request, response) => {
   try {
     const { data, error } = await getSupabaseAdminClient()

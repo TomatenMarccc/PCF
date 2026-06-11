@@ -110,3 +110,6 @@ on conflict (part_id) do update set
   pcf_breakdown = excluded.pcf_breakdown,
   material_breakdown = excluded.material_breakdown,
   g2g_breakdown = excluded.g2g_breakdown;
+
+select public.seed_mock_bom_for_part(id, part_number, name, pcf_total)
+from public.parts;

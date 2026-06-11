@@ -35,6 +35,21 @@ export interface PartDetail extends Part {
   charts: PartChartData;
 }
 
+export interface BomNode {
+  id: string;
+  node_key: string;
+  parent_node_key: string | null;
+  material_number: string;
+  description: string;
+  source: string;
+  quantity: number;
+  pcf: number;
+  pcf_upstream: number;
+  mcf: number;
+  level: number;
+  is_leaf: boolean;
+}
+
 export interface FilterOptions {
   plantCodes: string[];
   referenceYears: number[];

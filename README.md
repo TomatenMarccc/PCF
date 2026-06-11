@@ -69,7 +69,9 @@ dominant interface colors.
 - PCF Breakdown waterfall chart
 - Top Materials percentage chart
 - G2G emissions waterfall chart
-- Prepared BOM-Tree modal
+- Interactive BOM-Tree with zoom, pan, node details, and PCF-scaled nodes
+- BOM search with matching-node highlights and automatic path expansion
+- Expand-all, collapse-all, and recenter actions
 - Information placeholder route
 - Supabase-backed filter options and result data
 
@@ -224,3 +226,28 @@ Each field is a JSON array of `{ "label": string, "value": number }` entries.
 This keeps the X-axis categories flexible per part while the chart type and
 Y-axis unit remain consistent. The current migration and seed file generate
 mock chart data for all existing development parts.
+
+### BOM Tree Data
+
+The `public.bom_nodes` table stores a normalized hierarchy for every part.
+Each node contains:
+
+- Stable node and parent keys
+- Material or Part Number
+- Description and source system
+- Quantity and hierarchy level
+- PCF, upstream PCF, and MCF values
+- Leaf-node state
+
+The mock generator creates 127 nodes per development part across four levels:
+one root, six assemblies, 30 components, and 90 material leaves. Node sizes in
+the visualization are scaled by PCF. Parent and leaf nodes use the colors and
+search-highlight behavior derived from the supplied BOM visualization logic.
+
+Inside the BOM modal:
+
+- Click a node to expand/collapse it and inspect its values.
+- Right-click a node to open its details without changing expansion.
+- Search by Material Number, description, source, or level.
+- Matching nodes receive a blue highlight and their ancestor paths open.
+- Use `Expand all`, `Collapse all`, and the recenter button for large trees.

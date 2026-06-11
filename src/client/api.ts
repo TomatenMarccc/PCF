@@ -1,4 +1,10 @@
-import type { FilterOptions, Part, PartDetail, PartFilters } from "./types";
+import type {
+  BomNode,
+  FilterOptions,
+  Part,
+  PartDetail,
+  PartFilters,
+} from "./types";
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, options);
@@ -50,4 +56,14 @@ export function confirmPart(id: string): Promise<PartDetail> {
   return request(`/api/parts/${encodeURIComponent(id)}/confirm`, {
     method: "POST",
   });
+}
+
+export function getBomNodes(
+  id: string,
+  signal?: AbortSignal,
+): Promise<{ data: BomNode[] }> {
+  return request(
+    `/api/parts/${encodeURIComponent(id)}/bom`,
+    signal ? { signal } : undefined,
+  );
 }
