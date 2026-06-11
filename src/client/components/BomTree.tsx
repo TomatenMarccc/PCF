@@ -58,7 +58,8 @@ export default function BomTree({ partId }: BomTreeProps) {
     getBomNodes(partId, controller.signal)
       .then(({ data }) => {
         setNodes(data);
-        setExpanded(new Set());
+        const root = data.find((node) => node.parent_node_key === null);
+        setExpanded(root ? new Set([root.node_key]) : new Set());
       })
       .catch((requestError: unknown) => {
         if (!controller.signal.aborted) {

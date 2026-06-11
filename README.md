@@ -246,7 +246,7 @@ search-highlight behavior derived from the supplied BOM visualization logic.
 
 Inside the BOM modal:
 
-- The tree starts fully collapsed and initially shows only the root node.
+- The tree initially opens the first level and shows the root assemblies.
 - Click a node to expand/collapse it and inspect its values.
 - Right-click a node to open its details without changing expansion.
 - Search by Material Number, description, source, or level.
