@@ -1,0 +1,42 @@
+insert into public.parts (
+  id,
+  part_number,
+  name,
+  status,
+  bom_coverage,
+  pcf_total,
+  plant_code,
+  product_class,
+  calculation_method,
+  reference_year,
+  validity_year,
+  primary_data_share,
+  cx_data_quality_rating_total,
+  pcf_calculation_version
+)
+values
+  ('10000000-0000-4000-8000-000000000001', 'PCF-AX-1001', 'Aluminium Cross Member', 'Calculated', 94.50, 128.42, '1001', 'Chassis', 'Catena-X', 2025, 2027, 76.20, 91.40, '2.1'),
+  ('10000000-0000-4000-8000-000000000002', 'PCF-BR-1042', 'Brake Carrier Assembly', 'Complete', 100.00, 42.18, '1001', 'Brake System', 'Catena-X', 2025, 2027, 88.50, 95.10, '2.1'),
+  ('10000000-0000-4000-8000-000000000003', 'PCF-CS-2088', 'Center Console Structure', 'Calculated', 89.20, 18.76, '2040', 'Interior', 'Catena-X', 2024, 2026, 61.30, 84.70, '2.0'),
+  ('10000000-0000-4000-8000-000000000004', 'PCF-DR-3021', 'Door Reinforcement Beam', 'In Progress', 72.40, 31.09, '2040', 'Body', 'Catena-X', 2025, 2027, 55.80, 78.90, '2.1'),
+  ('10000000-0000-4000-8000-000000000005', 'PCF-EM-4105', 'Electric Motor Housing', 'Calculated', 96.10, 76.55, '3100', 'Powertrain', 'Catena-X', 2025, 2028, 82.40, 93.20, '2.2'),
+  ('10000000-0000-4000-8000-000000000006', 'PCF-FM-5077', 'Front Module Support', 'Complete', 100.00, 54.22, '3100', 'Body', 'Catena-X', 2024, 2026, 90.10, 96.30, '2.0'),
+  ('10000000-0000-4000-8000-000000000007', 'PCF-HV-6012', 'High-Voltage Battery Tray', 'Calculated', 91.70, 214.63, '4220', 'Battery', 'Catena-X', 2025, 2028, 70.60, 87.50, '2.2'),
+  ('10000000-0000-4000-8000-000000000008', 'PCF-IP-7044', 'Instrument Panel Carrier', 'In Progress', 68.90, 23.41, '4220', 'Interior', 'Catena-X', 2025, 2027, 49.20, 74.60, '2.1'),
+  ('10000000-0000-4000-8000-000000000009', 'PCF-LA-8090', 'Longitudinal Arm', 'Calculated', 93.80, 37.84, '5105', 'Chassis', 'Catena-X', 2024, 2026, 79.30, 89.80, '2.0'),
+  ('10000000-0000-4000-8000-000000000010', 'PCF-RF-9023', 'Roof Frame Assembly', 'Complete', 100.00, 66.17, '5105', 'Body', 'Catena-X', 2025, 2027, 92.70, 97.10, '2.1'),
+  ('10000000-0000-4000-8000-000000000011', 'PCF-SB-1150', 'Seat Base Structure', 'Calculated', 86.30, 29.95, '6200', 'Interior', 'Catena-X', 2024, 2026, 64.50, 82.30, '2.0'),
+  ('10000000-0000-4000-8000-000000000012', 'PCF-TM-2214', 'Transmission Mount', 'In Progress', 75.60, 14.38, '6200', 'Powertrain', 'Catena-X', 2025, 2027, 57.90, 77.80, '2.1')
+on conflict (part_number) do update set
+  name = excluded.name,
+  status = excluded.status,
+  bom_coverage = excluded.bom_coverage,
+  pcf_total = excluded.pcf_total,
+  plant_code = excluded.plant_code,
+  product_class = excluded.product_class,
+  calculation_method = excluded.calculation_method,
+  reference_year = excluded.reference_year,
+  validity_year = excluded.validity_year,
+  primary_data_share = excluded.primary_data_share,
+  cx_data_quality_rating_total = excluded.cx_data_quality_rating_total,
+  pcf_calculation_version = excluded.pcf_calculation_version;

@@ -1,0 +1,13 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Supabase CLI state
+supabase/.branches
+supabase/.temp
+
+# Dependencies and build output
+node_modules
+dist
+.next
