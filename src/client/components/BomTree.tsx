@@ -37,6 +37,8 @@ const NODE_RING_SEARCH = "#b8d6ff";
 const NODE_DISABLED_COLOR = "#a4abb3";
 const LINK_DEFAULT_COLOR = "rgba(113, 118, 124, 0.42)";
 const LINK_DISABLED_COLOR = "rgba(164, 171, 179, 0.22)";
+const MIN_MANUAL_ZOOM = 0.35;
+const MIN_AUTO_FIT_ZOOM = 0.48;
 
 export default function BomTree({ partId }: BomTreeProps) {
   const [nodes, setNodes] = useState<BomNode[]>([]);
@@ -158,7 +160,7 @@ export default function BomTree({ partId }: BomTreeProps) {
 
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.18, 2.5])
+      .scaleExtent([MIN_MANUAL_ZOOM, 2.5])
       .on("zoom", (event) => {
         d3.select(viewportElement).attr("transform", event.transform.toString());
       });
@@ -189,7 +191,7 @@ export default function BomTree({ partId }: BomTreeProps) {
     const scale = Math.min(
       1,
       Math.max(
-        0.22,
+        MIN_AUTO_FIT_ZOOM,
         Math.min(bounds.width / treeWidth, bounds.height / treeHeight) * 0.92,
       ),
     );

@@ -252,6 +252,8 @@ Inside the BOM modal:
 - Search by Material Number, description, source, or level.
 - Matching nodes receive a blue highlight and their ancestor paths open.
 - Use `Expand all`, `Collapse all`, and the recenter button for large trees.
+- Large expanded trees keep a readable minimum zoom and can be explored by
+  dragging the canvas.
 
 Node colors follow the hierarchy and material type:
 
