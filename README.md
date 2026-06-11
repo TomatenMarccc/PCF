@@ -139,6 +139,25 @@ npm start
 `npm start` serves the production build. In a production environment, provide
 the environment variables through the hosting platform.
 
+## Vercel Deployment
+
+The repository contains `vercel.json` and an Express entry point in
+`api/index.ts`. Vercel builds the Vite frontend into `dist/client`, routes
+`/api/*` requests to the Express serverless function, and sends all other
+routes to the React application.
+
+Configure these variables in `Project Settings -> Environment Variables`:
+
+```text
+SUPABASE_URL
+SUPABASE_PUBLISHABLE_KEY
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+Apply them to Production and Preview deployments. Do not configure `PORT`;
+Vercel manages the function runtime automatically. Redeploy after changing
+environment variables.
+
 ## Application Routes
 
 - `/` - PCF overview, search, filters, and preview cards

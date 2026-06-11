@@ -10,7 +10,7 @@
     "dev": "concurrently -k -n api,web \"tsx watch src/server.ts\" \"vite\"",
     "build": "tsc -p tsconfig.server.json && vite build",
     "start": "NODE_ENV=production node dist/server/server.js",
-    "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.app.json --noEmit",
+    "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.vercel.json && tsc -p tsconfig.app.json --noEmit",
     "test": "node --import tsx --test src/**/*.test.ts"
   },
   "dependencies": {

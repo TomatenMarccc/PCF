@@ -14,6 +14,7 @@ import {
 } from "./lib/part-filters.js";
 
 export const app = express();
+export default app;
 
 app.disable("x-powered-by");
 app.use(express.json());
@@ -140,7 +141,7 @@ app.post("/api/parts/:id/confirm", async (request, response) => {
   }
 });
 
-if (env.nodeEnv === "production") {
+if (env.nodeEnv === "production" && process.env.VERCEL !== "1") {
   const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
   const clientDirectory = path.resolve(currentDirectory, "../client");
 
@@ -163,7 +164,7 @@ function handleApiError(
   });
 }
 
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== "test" && process.env.VERCEL !== "1") {
   app.listen(env.port, () => {
     console.log(`PCF API listening on http://localhost:${env.port}`);
   });
