@@ -246,8 +246,18 @@ search-highlight behavior derived from the supplied BOM visualization logic.
 
 Inside the BOM modal:
 
+- The tree starts fully collapsed and initially shows only the root node.
 - Click a node to expand/collapse it and inspect its values.
 - Right-click a node to open its details without changing expansion.
 - Search by Material Number, description, source, or level.
 - Matching nodes receive a blue highlight and their ancestor paths open.
 - Use `Expand all`, `Collapse all`, and the recenter button for large trees.
+
+Node colors follow the hierarchy and material type:
+
+- Root: Black
+- Assemblies: Bosch Blue
+- Components: Bosch Turquoise
+- Steel materials: Bosch Gray
+- Aluminium materials: Bosch Purple
+- Thermoplastic materials: Bosch Green

@@ -25,8 +25,14 @@ interface TreeNodeData extends BomNode {
   children: TreeNodeData[];
 }
 
-const NODE_FILL_COLOR = "#005587";
-const NODE_LEAF_COLOR = "#0088d4";
+const NODE_ROOT_COLOR = "#000000";
+const NODE_ASSEMBLY_COLOR = "#007bc0";
+const NODE_COMPONENT_COLOR = "#18837e";
+const NODE_MATERIAL_COLORS = {
+  steel: "#71767c",
+  aluminium: "#9e2896",
+  thermoplastic: "#00884a",
+} as const;
 const NODE_RING_SEARCH = "#b8d6ff";
 const NODE_DISABLED_COLOR = "#a4abb3";
 const LINK_DEFAULT_COLOR = "rgba(113, 118, 124, 0.42)";
@@ -52,13 +58,7 @@ export default function BomTree({ partId }: BomTreeProps) {
     getBomNodes(partId, controller.signal)
       .then(({ data }) => {
         setNodes(data);
-        setExpanded(
-          new Set(
-            data
-              .filter((node) => node.level <= 1 && !node.is_leaf)
-              .map((node) => node.node_key),
-          ),
-        );
+        setExpanded(new Set());
       })
       .catch((requestError: unknown) => {
         if (!controller.signal.aborted) {
@@ -233,8 +233,7 @@ export default function BomTree({ partId }: BomTreeProps) {
   }
 
   function collapseAll() {
-    const root = nodes.find((node) => node.parent_node_key === null);
-    setExpanded(root ? new Set([root.node_key]) : new Set());
+    setExpanded(new Set());
   }
 
   if (loading) {
@@ -334,9 +333,7 @@ export default function BomTree({ partId }: BomTreeProps) {
                     fill={
                       isDimmed
                         ? NODE_DISABLED_COLOR
-                        : node.data.is_leaf
-                          ? NODE_LEAF_COLOR
-                          : NODE_FILL_COLOR
+                        : getNodeColor(node.data)
                     }
                     stroke="#ffffff"
                     strokeWidth={2}
@@ -444,6 +441,30 @@ function getNodeRadius(node: BomNode, maximumPcf: number): number {
     Math.max(0, Math.min(1, Number(node.pcf) / maximumPcf)),
   );
   return Math.max(5, Math.min(22, 5 + normalized * 17));
+}
+
+function getNodeColor(node: BomNode): string {
+  if (node.level === 0) {
+    return NODE_ROOT_COLOR;
+  }
+
+  if (node.level === 1) {
+    return NODE_ASSEMBLY_COLOR;
+  }
+
+  if (node.level === 2) {
+    return NODE_COMPONENT_COLOR;
+  }
+
+  const description = node.description.toLowerCase();
+  if (description.includes("aluminium")) {
+    return NODE_MATERIAL_COLORS.aluminium;
+  }
+  if (description.includes("thermoplastic")) {
+    return NODE_MATERIAL_COLORS.thermoplastic;
+  }
+
+  return NODE_MATERIAL_COLORS.steel;
 }
 
 function linkPath(
